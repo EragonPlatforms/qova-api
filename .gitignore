@@ -1,6 +1,7 @@
 venv/
-.env
 .idea/
 *.db
 __pycache__/
 data/
+.DS_Store
+.env

@@ -11,6 +11,7 @@ from models import UserModel, ChatRequest
 from utils import retrieve_rag_query
 
 load_dotenv()
+APP_ENV = os.getenv("APP_ENV", "dev")
 
 app = FastAPI()
 
@@ -19,7 +20,7 @@ LLM_MODEL_NAME = "llama-3.1-8b-instant"
 
 
 def get_llm():
-    return ChatGroq(model_name=LLM_MODEL_NAME, temperature=0.5, api_key=os.getenv('GROQ_API_KEY'))
+    return ChatGroq(model_name=LLM_MODEL_NAME, temperature=0.9, api_key=os.getenv('GROQ_API_KEY'))
 
 
 @app.get("/")
@@ -42,5 +43,5 @@ async def chat(chat_request: ChatRequest, llm: Annotated[ChatGroq, Depends(get_l
         raise HTTPException(status_code=404, detail="Error getting response")
 
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, reload=True)
+if __name__ == "__main__" and APP_ENV == "dev":
+    uvicorn.run("main:app", port=8000, reload=True)
